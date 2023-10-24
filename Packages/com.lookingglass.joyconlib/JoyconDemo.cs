@@ -12,6 +12,8 @@ public class JoyconDemo : MonoBehaviour {
     public Vector3 accel;
     public int jc_ind = 0;
     public Quaternion orientation;
+	public float currentOrientation = 0.0f; // Initial orientation
+
 
     void Start ()
     {
@@ -29,7 +31,33 @@ public class JoyconDemo : MonoBehaviour {
 		// make sure the Joycon only gets checked if attached
 		if (joycons.Count > 0)
         {
-			Joycon j = joycons [jc_ind];
+			  Joycon j = joycons[jc_ind];
+
+           /* // Get the orientation vector
+            orientation = j.GetVector();
+
+            // Calculate the angle using the x-component of the orientation vector (in degrees)
+            float angle = Mathf.Atan2(orientation.x, orientation.z) * Mathf.Rad2Deg;
+
+            // Ensure angle is in the range [0, 360]
+            if (angle < 0) {
+                angle += 360.0f;
+            }
+
+            // Set the current orientation for your game object
+            currentOrientation = angle;
+
+            // Display the angle in the console
+        	Debug.Log("Current Angle: " + currentOrientation);
+
+            // Set the transform.position.x to the currentOrientation
+            Vector3 newPosition = transform.position;
+            newPosition.x = currentOrientation;
+            transform.position = newPosition;
+	*/
+
+
+
 			// GetButtonDown checks if a button has been pressed (not held)
             if (j.GetButtonDown(Joycon.Button.SHOULDER_2))
             {
@@ -72,12 +100,13 @@ public class JoyconDemo : MonoBehaviour {
             // Accel values:  x, y, z axis values (in Gs)
             accel = j.GetAccel();
 
-            orientation = j.GetVector();
+            
 			if (j.GetButton(Joycon.Button.DPAD_UP)){
 				gameObject.GetComponent<Renderer>().material.color = Color.red;
 			} else{
 				gameObject.GetComponent<Renderer>().material.color = Color.blue;
 			}
+			orientation = j.GetVector();
             gameObject.transform.rotation = orientation;
         }
     }
